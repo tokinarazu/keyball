@@ -82,9 +82,11 @@ combo_t key_combos[] = {
 };
 uint16_t COMBO_LEN = sizeof(key_combos) / sizeof(*key_combos);
 
+/*
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (!twpair_on_jis(keycode, record))
     return false;
 
   return true;
 }
+*/
