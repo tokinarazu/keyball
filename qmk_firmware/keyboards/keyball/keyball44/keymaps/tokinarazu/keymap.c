@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
+#include "features/twpair_on_jis.h"
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
@@ -69,3 +71,11 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_layerinfo();
 }
 #endif
+
+// [CUSTOM]
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (!twpair_on_jis(keycode, record))
+    return false;
+
+  return true;
+}
