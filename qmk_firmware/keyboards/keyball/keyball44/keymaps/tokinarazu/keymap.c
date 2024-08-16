@@ -73,6 +73,15 @@ void oledkit_render_info_user(void) {
 #endif
 
 // [CUSTOM]
+// Left Alt + REPEAT_KEY => ALT_REPEAT_KEY.
+const uint16_t repeat_combo1[] PROGMEM = {KC_LALT, QK_REP, COMBO_END};
+const uint16_t repeat_combo2[] PROGMEM = {LALT_T(KC_S), QK_REP, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(repeat_combo1, QK_AREP),
+    COMBO(repeat_combo2, QK_AREP),
+};
+uint16_t COMBO_LEN = sizeof(key_combos) / sizeof(*key_combos);
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (!twpair_on_jis(keycode, record))
     return false;
