@@ -151,11 +151,46 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 };
 #endif // KEY_OVERRIDE_ENABLE
 
-/*
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (!twpair_on_jis(keycode, record))
-    return false;
+  switch (keycode) {
+    case QK_MACRO_0:
+      if (record->event.pressed) {
+        // WIN + SPACE (JIS ⇔ US配列切替)
+        SEND_STRING(SS_LGUI(SS_TAP(X_SPACE)));
+      }
+      return false;
+    case QK_MACRO_1:
+      if (record->event.pressed) {
+        // CTRL + HOME (先頭へ移動)
+        SEND_STRING(SS_LCTL(SS_TAP(X_HOME)));
+      }
+      return false;
+    case QK_MACRO_2:
+      if (record->event.pressed) {
+        // CTRL + END (最後へ移動)
+        SEND_STRING(SS_LCTL(SS_TAP(X_END)));
+      }
+      return false;
+    case QK_MACRO_5:
+      if (record->event.pressed) {
+        // CTRL + F3 (カーソル位置の単語で次へ検索)
+        SEND_STRING(SS_LCTL(SS_TAP(X_F3)));
+      }
+      return false;
+    case QK_MACRO_6:
+      if (record->event.pressed) {
+        // ALT + F5 (VSCode: 差分を次へ検索)
+        SEND_STRING(SS_LALT(SS_TAP(X_F5)));
+      }
+      return false;
+    case QK_MACRO_7:
+      if (record->event.pressed) {
+        // click して行全体をコピー
+        SEND_STRING(SS_TAP(X_BTN1) SS_TAP(X_HOME) SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)) SS_LCTL("c"));
+      }
+      return false;
+  }
 
   return true;
 }
-*/
+
