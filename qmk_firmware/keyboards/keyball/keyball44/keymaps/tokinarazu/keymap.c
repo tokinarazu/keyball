@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
-
-#include "features/twpair_on_jis.h"
+#include "keymap_japanese.h"
+// #include "features/twpair_on_jis.h"
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -73,6 +73,7 @@ void oledkit_render_info_user(void) {
 #endif
 
 // [CUSTOM]
+#if defined(COMBO_ENABLE)
 // Left Alt + REPEAT_KEY => ALT_REPEAT_KEY.
 const uint16_t repeat_combo1[] PROGMEM = {KC_LALT, QK_REP, COMBO_END};
 const uint16_t repeat_combo2[] PROGMEM = {LALT_T(KC_S), QK_REP, COMBO_END};
@@ -81,6 +82,74 @@ combo_t key_combos[] = {
     COMBO(repeat_combo2, QK_AREP),
 };
 uint16_t COMBO_LEN = sizeof(key_combos) / sizeof(*key_combos);
+#endif // COMBO_ENABLE
+
+#if defined(KEY_OVERRIDE_ENABLE)
+// shift+2  " -> @
+const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, JP_AT, ~0);
+// shift+6  & -> ^
+const key_override_t kor_circ = ko_make_with_layers(MOD_MASK_SHIFT, KC_6, JP_CIRC, ~0);
+// shift+7  ' -> &
+const key_override_t kor_ampr = ko_make_with_layers(MOD_MASK_SHIFT, KC_7, JP_AMPR, ~0);
+// shift+8  ( -> *
+const key_override_t kor_astr = ko_make_with_layers(MOD_MASK_SHIFT, KC_8, JP_ASTR, ~0);
+// shift+9  ) -> (
+const key_override_t kor_lprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_9, JP_LPRN, ~0);
+// shift+0    -> )
+const key_override_t kor_rprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_0, JP_RPRN, ~0);
+// shift+-  = -> _
+const key_override_t kor_unds = ko_make_with_layers(MOD_MASK_SHIFT, KC_MINS, JP_UNDS, ~0);
+// =        ^ -> =
+// shift+=  ~ -> +
+const key_override_t kor_eql = ko_make_with_layers_and_negmods(0, JP_CIRC, JP_EQL, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_plus = ko_make_with_layers(MOD_MASK_SHIFT, JP_CIRC, JP_PLUS, ~0);
+/* \        ] -> \ */
+/* shift+\  } -> | */
+const key_override_t kor_bsls = ko_make_with_layers_and_negmods(0, KC_BSLS, JP_BSLS, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_pipe = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, JP_PIPE, ~0);
+// [        @ -> [
+// shift+[  ` -> {
+const key_override_t kor_lbrc = ko_make_with_layers_and_negmods(0, JP_AT, JP_LBRC, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_lcbr = ko_make_with_layers(MOD_MASK_SHIFT, JP_AT, JP_LCBR, ~0);
+// ]        [ -> ]
+// shift+]  { -> }
+const key_override_t kor_rbrc = ko_make_with_layers_and_negmods(0, JP_LBRC, JP_RBRC, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_rcbr = ko_make_with_layers(MOD_MASK_SHIFT, JP_LBRC, JP_RCBR, ~0);
+// shift+;  + -> :
+const key_override_t kor_coln = ko_make_with_layers(MOD_MASK_SHIFT, KC_SCLN, JP_COLN, ~0);
+// '        : -> '
+// shift+'  * -> "
+const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, JP_QUOT, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_dquo = ko_make_with_layers(MOD_MASK_SHIFT, KC_QUOT, JP_DQUO, ~0);
+// `        全角半角 -> `
+// shift+`  shift+全角半角 -> ~
+const key_override_t kor_grv = ko_make_with_layers_and_negmods(0, KC_GRV, JP_GRV, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_tild = ko_make_with_layers(MOD_MASK_SHIFT, KC_GRV, JP_TILD, ~0);
+
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &kor_at,
+    &kor_circ,
+    &kor_ampr,
+    &kor_astr,
+    &kor_lprn,
+    &kor_rprn,
+    &kor_unds,
+    &kor_eql,
+    &kor_plus,
+    &kor_bsls,
+    &kor_pipe,
+    &kor_lbrc,
+    &kor_lcbr,
+    &kor_rbrc,
+    &kor_rcbr,
+    &kor_coln,
+    &kor_quot,
+    &kor_dquo,
+    &kor_grv,
+    &kor_tild,
+    NULL
+};
+#endif // KEY_OVERRIDE_ENABLE
 
 /*
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
