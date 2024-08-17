@@ -151,6 +151,7 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 };
 #endif // KEY_OVERRIDE_ENABLE
 
+/*
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QK_MACRO_0:
@@ -193,4 +194,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   return true;
 }
-
+*/
