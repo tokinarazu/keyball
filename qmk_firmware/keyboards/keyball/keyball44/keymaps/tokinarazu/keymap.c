@@ -160,6 +160,7 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 #endif // KEY_OVERRIDE_ENABLE
 
 static bool jis_mode = false;
+static uint16_t registered_key = KC_NO;
 
 bool is_jis_mode(void) {
   return jis_mode;
@@ -215,7 +216,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     case KC_BSPC:
-      static uint16_t registered_key = KC_NO;
       if (record->event.pressed) {  // On key press.
         const uint8_t mods = get_mods();
 #ifndef NO_ACTION_ONESHOT
