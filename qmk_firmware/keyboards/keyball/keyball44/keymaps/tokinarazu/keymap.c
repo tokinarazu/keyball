@@ -117,7 +117,7 @@ const key_override_t kor_pipe = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, S(K
 // shift+;  + -> :
 const key_override_t kor_coln = ko_make_with_layers(MOD_MASK_SHIFT, KC_SCLN, S(KC_QUOT), ~0);
 // '        : -> '
-const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, KC_EQLS, ~0, MOD_MASK_SHIFT);
+const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, KC_EQL, ~0, MOD_MASK_SHIFT);
 // shift+'  * -> "
 const key_override_t kor_dquo = ko_make_with_layers(MOD_MASK_SHIFT, KC_QUOT, KC_LBRC, ~0);
 // `        全角半角 -> `
