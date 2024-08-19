@@ -37,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [0] = LAYOUT_universal(
     KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
-    LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , KC_SCLN  , KC_MINUS ,
+    LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
     KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
                   KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REPEAT_KEY, LT(2,KC_ENT), KC_NO      , KC_NO    , QK_KEY_OVERRIDE_TOGGLE
   ),
@@ -85,15 +85,15 @@ void oledkit_render_info_user(void) {
 // [CUSTOM]
 #if defined(KEY_OVERRIDE_ENABLE)
 // shift+2  " -> @
-const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, KC_LBRC, ~0);
+const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, S(KC_2), ~0);
 // shift+6  & -> ^
 const key_override_t kor_circ = ko_make_with_layers(MOD_MASK_SHIFT, KC_6, KC_EQL, ~0);
 // shift+7  ' -> &
 const key_override_t kor_ampr = ko_make_with_layers(MOD_MASK_SHIFT, KC_7, S(KC_6), ~0);
 // shift+8  ( -> *
-const key_override_t kor_astr = ko_make_with_layers(MOD_MASK_SHIFT, KC_8, S(KC_QUOT), ~0);
+const key_override_t kor_astr = ko_make_with_layers(MOD_MASK_SHIFT, KC_8, S(KC_2), ~0);
 // shift+9  ) -> (
-const key_override_t kor_lprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_9, S(KC_8), ~0);
+const key_override_t kor_lprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_9, S(KC_QUOT), ~0);
 // shift+0    -> )
 const key_override_t kor_rprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_0, S(KC_9), ~0);
 // shift+-  = -> _
@@ -105,11 +105,11 @@ const key_override_t kor_plus = ko_make_with_layers(MOD_MASK_SHIFT, KC_EQL, S(KC
 // [        @ -> [
 const key_override_t kor_lbrc = ko_make_with_layers_and_negmods(0, KC_LBRC, KC_RBRC, ~0, MOD_MASK_SHIFT);
 // shift+[  ` -> {
-const key_override_t kor_lcbr = ko_make_with_layers(MOD_MASK_SHIFT, KC_LBRC, S(KC_RBRC), ~0);
+const key_override_t kor_lcbr = ko_make_with_layers(MOD_MASK_SHIFT, KC_LBRC, S(KC_NUHS), ~0);
 // ]        [ -> ]
 const key_override_t kor_rbrc = ko_make_with_layers_and_negmods(0, KC_RBRC, KC_NUHS, ~0, MOD_MASK_SHIFT);
 // shift+]  { -> }
-const key_override_t kor_rcbr = ko_make_with_layers(MOD_MASK_SHIFT, KC_RBRC, S(KC_NUHS), ~0);
+const key_override_t kor_rcbr = ko_make_with_layers(MOD_MASK_SHIFT, KC_RBRC, S(KC_RBRC), ~0);
 /* \        ] -> \ */
 const key_override_t kor_bsls = ko_make_with_layers_and_negmods(0, KC_BSLS, KC_INT1, ~0, MOD_MASK_SHIFT);
 /* shift+\  } -> | */
@@ -117,9 +117,9 @@ const key_override_t kor_pipe = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, S(K
 // shift+;  + -> :
 const key_override_t kor_coln = ko_make_with_layers(MOD_MASK_SHIFT, KC_SCLN, S(KC_QUOT), ~0);
 // '        : -> '
-const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, S(KC_7), ~0, MOD_MASK_SHIFT);
+const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, KC_EQLS, ~0, MOD_MASK_SHIFT);
 // shift+'  * -> "
-const key_override_t kor_dquo = ko_make_with_layers(MOD_MASK_SHIFT, KC_QUOT, S(KC_2), ~0);
+const key_override_t kor_dquo = ko_make_with_layers(MOD_MASK_SHIFT, KC_QUOT, KC_LBRC, ~0);
 // `        全角半角 -> `
 const key_override_t kor_grv = ko_make_with_layers_and_negmods(0, KC_GRV, S(KC_LBRC), ~0, MOD_MASK_SHIFT);
 // shift+`  shift+全角半角 -> ~
