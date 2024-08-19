@@ -85,7 +85,7 @@ void oledkit_render_info_user(void) {
 // [CUSTOM]
 #if defined(KEY_OVERRIDE_ENABLE)
 // shift+2  " -> @
-const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, S(KC_2), ~0);
+const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, KC_LBRC, ~0);
 // shift+6  & -> ^
 const key_override_t kor_circ = ko_make_with_layers(MOD_MASK_SHIFT, KC_6, KC_EQL, ~0);
 // shift+7  ' -> &
