@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 // #include "keymap_japanese.h"
-#include "translate_ansi_to_jis.h"
+#include "features/translate_ansi_to_jis.h"
 
 enum custom_keycodes {
    MY_MACRO_0 = SAFE_RANGE,  // 0x7E40
