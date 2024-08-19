@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #include "features/twpair_on_jis.h"
 
 enum custom_keycodes {
-   MY_MACRO_0 = SAFE_RANGE,
+   MY_MACRO_0 = SAFE_RANGE,  // 0x7E40
    MY_MACRO_1,
    MY_MACRO_2,
    MY_MACRO_3,
@@ -36,7 +36,7 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [0] = LAYOUT_universal(
-    KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_DEL   ,
+    KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
     LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , KC_SCLN  , KC_MINUS ,
     KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
                   KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REPEAT_KEY, LT(2,KC_ENT), KC_NO      , KC_NO    , QK_KEY_OVERRIDE_TOGGLE
@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [1] = LAYOUT_universal(
     _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     KC_ENT   , KC_HOME  , KC_UP    , KC_END   , KC_F6    , KC_F7    ,
-    _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_PGUP  , KC_LEFT  , KC_DOWN  , KC_RGHT  , KC_F8    , KC_F9    ,
+    _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , KC_F8    , KC_F9    ,
     _______  ,  KC_F1   , KC_F2     , KC_F4   , KC_F4     , KC_F5  ,                                         KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_F10   , KC_F11   ,
                   _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_F12
   ),
