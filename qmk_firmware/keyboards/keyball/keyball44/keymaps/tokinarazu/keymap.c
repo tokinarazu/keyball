@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 // #include "keymap_japanese.h"
-// #include "features/twpair_on_jis.h"
+#include "translate_ansi_to_jis.h"
 
 enum custom_keycodes {
    MY_MACRO_0 = SAFE_RANGE,  // 0x7E40
@@ -29,6 +29,7 @@ enum custom_keycodes {
    MY_MACRO_3,
    MY_MACRO_4,
    MY_MACRO_5,
+   A_TO_J_TOGG,
    MY_USER_0 = KEYBALL_SAFE_RANGE  // 0x7E40
 };
 
@@ -39,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
     LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
     KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
-                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REPEAT_KEY, LT(2,KC_ENT), KC_NO      , KC_NO    , QK_KEY_OVERRIDE_TOGGLE
+                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REPEAT_KEY, LT(2,KC_ENT), KC_NO      , KC_NO  , A_TO_J_TOGG
   ),
 
   [1] = LAYOUT_universal(
@@ -158,6 +159,16 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 };
 #endif // KEY_OVERRIDE_ENABLE
 
+static bool jis_mode = false;
+
+bool is_jis_mode(void) {
+  return jis_mode;
+}
+
+void set_jis_mode(bool is_jis_mode) {
+  jis_mode = is_jis_mode;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case MY_MACRO_0:
@@ -202,6 +213,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+
+    case KC_BSPC:
+      static uint16_t registered_key = KC_NO;
+      if (record->event.pressed) {  // On key press.
+        const uint8_t mods = get_mods();
+#ifndef NO_ACTION_ONESHOT
+        uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+#else
+        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+#endif  // NO_ACTION_ONESHOT
+        if (shift_mods) {  // At least one shift key is held.
+          registered_key = KC_DEL;
+          // If one shift is held, clear it from the mods. But if both
+          // shifts are held, leave as is to send Shift + Del.
+          if (shift_mods != MOD_MASK_SHIFT) {
+#ifndef NO_ACTION_ONESHOT
+            del_oneshot_mods(MOD_MASK_SHIFT);
+#endif  // NO_ACTION_ONESHOT
+            unregister_mods(MOD_MASK_SHIFT);
+          }
+        } else {
+          registered_key = KC_BSPC;
+        }
+
+        register_code(registered_key);
+        set_mods(mods);
+      } else {  // On key release.
+        unregister_code(registered_key);
+      }
+      return false;
+      break;
+
+    case A_TO_J_TOGG:
+      if (record->event.pressed) {
+        set_jis_mode(!is_jis_mode());
+      }
+      return false;
+      break;
+  }
+
+  if (is_jis_mode()) {
+    return process_record_user_a2j(keycode, record);
   }
 
   return true;
