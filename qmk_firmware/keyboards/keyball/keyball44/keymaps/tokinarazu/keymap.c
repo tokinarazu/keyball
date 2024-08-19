@@ -19,8 +19,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
-#include "keymap_japanese.h"
+// #include "keymap_japanese.h"
 // #include "features/twpair_on_jis.h"
+
+enum custom_keycodes {
+   MY_MACRO_0 = SAFE_RANGE,
+   MY_MACRO_1,
+   MY_MACRO_2,
+   MY_MACRO_3,
+   MY_MACRO_4,
+   MY_MACRO_5,
+   MY_USER_0 = KEYBALL_SAFE_RANGE  // 0x7E40
+};
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -33,8 +43,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [1] = LAYOUT_universal(
-    _______  ,  KC_PGUP , QK_MACRO_0, KC_END  , QK_MACRO_2, QK_MACRO_7 ,                                     KC_ENT   , KC_HOME  , KC_UP    , KC_END   , KC_F6    , KC_F7    ,
-    _______  ,  KC_HOME , QK_MACRO_1, KC_PGDN , QK_MACRO_5, QK_MACRO_6 ,                                     KC_PGUP  , KC_LEFT  , KC_DOWN  , KC_RGHT  , KC_F8    , KC_F9    ,
+    _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     KC_ENT   , KC_HOME  , KC_UP    , KC_END   , KC_F6    , KC_F7    ,
+    _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_PGUP  , KC_LEFT  , KC_DOWN  , KC_RGHT  , KC_F8    , KC_F9    ,
     _______  ,  KC_F1   , KC_F2     , KC_F4   , KC_F4     , KC_F5  ,                                         KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_F10   , KC_F11   ,
                   _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_F12
   ),
@@ -73,58 +83,53 @@ void oledkit_render_info_user(void) {
 #endif
 
 // [CUSTOM]
-#if defined(COMBO_ENABLE)
-// Left Alt + REPEAT_KEY => ALT_REPEAT_KEY.
-const uint16_t repeat_combo1[] PROGMEM = {KC_LALT, QK_REP, COMBO_END};
-const uint16_t repeat_combo2[] PROGMEM = {LALT_T(KC_S), QK_REP, COMBO_END};
-combo_t key_combos[] = {
-    COMBO(repeat_combo1, QK_AREP),
-    COMBO(repeat_combo2, QK_AREP),
-};
-uint16_t COMBO_LEN = sizeof(key_combos) / sizeof(*key_combos);
-#endif // COMBO_ENABLE
-
 #if defined(KEY_OVERRIDE_ENABLE)
 // shift+2  " -> @
-const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, JP_AT, ~0);
+const key_override_t kor_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_2, KC_LBRC, ~0);
 // shift+6  & -> ^
-const key_override_t kor_circ = ko_make_with_layers(MOD_MASK_SHIFT, KC_6, JP_CIRC, ~0);
+const key_override_t kor_circ = ko_make_with_layers(MOD_MASK_SHIFT, KC_6, KC_EQL, ~0);
 // shift+7  ' -> &
-const key_override_t kor_ampr = ko_make_with_layers(MOD_MASK_SHIFT, KC_7, JP_AMPR, ~0);
+const key_override_t kor_ampr = ko_make_with_layers(MOD_MASK_SHIFT, KC_7, S(KC_6), ~0);
 // shift+8  ( -> *
-const key_override_t kor_astr = ko_make_with_layers(MOD_MASK_SHIFT, KC_8, JP_ASTR, ~0);
+const key_override_t kor_astr = ko_make_with_layers(MOD_MASK_SHIFT, KC_8, S(KC_QUOT), ~0);
 // shift+9  ) -> (
-const key_override_t kor_lprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_9, JP_LPRN, ~0);
+const key_override_t kor_lprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_9, S(KC_8), ~0);
 // shift+0    -> )
-const key_override_t kor_rprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_0, JP_RPRN, ~0);
+const key_override_t kor_rprn = ko_make_with_layers(MOD_MASK_SHIFT, KC_0, S(KC_9), ~0);
 // shift+-  = -> _
-const key_override_t kor_unds = ko_make_with_layers(MOD_MASK_SHIFT, KC_MINS, JP_UNDS, ~0);
+const key_override_t kor_unds = ko_make_with_layers(MOD_MASK_SHIFT, KC_MINS, S(KC_INT1), ~0);
 // =        ^ -> =
+const key_override_t kor_eql = ko_make_with_layers_and_negmods(0, KC_EQL, KC_MINS, ~0, MOD_MASK_SHIFT);
 // shift+=  ~ -> +
-const key_override_t kor_eql = ko_make_with_layers_and_negmods(0, JP_CIRC, JP_EQL, ~0, MOD_MASK_SHIFT);
-const key_override_t kor_plus = ko_make_with_layers(MOD_MASK_SHIFT, JP_CIRC, JP_PLUS, ~0);
-/* \        ] -> \ */
-/* shift+\  } -> | */
-const key_override_t kor_bsls = ko_make_with_layers_and_negmods(0, KC_BSLS, JP_BSLS, ~0, MOD_MASK_SHIFT);
-const key_override_t kor_pipe = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, JP_PIPE, ~0);
+const key_override_t kor_plus = ko_make_with_layers(MOD_MASK_SHIFT, KC_EQL, S(KC_SCLN), ~0);
 // [        @ -> [
+const key_override_t kor_lbrc = ko_make_with_layers_and_negmods(0, KC_LBRC, KC_RBRC, ~0, MOD_MASK_SHIFT);
 // shift+[  ` -> {
-const key_override_t kor_lbrc = ko_make_with_layers_and_negmods(0, JP_AT, JP_LBRC, ~0, MOD_MASK_SHIFT);
-const key_override_t kor_lcbr = ko_make_with_layers(MOD_MASK_SHIFT, JP_AT, JP_LCBR, ~0);
+const key_override_t kor_lcbr = ko_make_with_layers(MOD_MASK_SHIFT, KC_LBRC, S(KC_RBRC), ~0);
 // ]        [ -> ]
+const key_override_t kor_rbrc = ko_make_with_layers_and_negmods(0, KC_RBRC, KC_NUHS, ~0, MOD_MASK_SHIFT);
 // shift+]  { -> }
-const key_override_t kor_rbrc = ko_make_with_layers_and_negmods(0, JP_LBRC, JP_RBRC, ~0, MOD_MASK_SHIFT);
-const key_override_t kor_rcbr = ko_make_with_layers(MOD_MASK_SHIFT, JP_LBRC, JP_RCBR, ~0);
+const key_override_t kor_rcbr = ko_make_with_layers(MOD_MASK_SHIFT, KC_RBRC, S(KC_NUHS), ~0);
+/* \        ] -> \ */
+const key_override_t kor_bsls = ko_make_with_layers_and_negmods(0, KC_BSLS, KC_INT1, ~0, MOD_MASK_SHIFT);
+/* shift+\  } -> | */
+const key_override_t kor_pipe = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, S(KC_INT3), ~0);
 // shift+;  + -> :
-const key_override_t kor_coln = ko_make_with_layers(MOD_MASK_SHIFT, KC_SCLN, JP_COLN, ~0);
+const key_override_t kor_coln = ko_make_with_layers(MOD_MASK_SHIFT, KC_SCLN, S(KC_QUOT), ~0);
 // '        : -> '
+const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, S(KC_7), ~0, MOD_MASK_SHIFT);
 // shift+'  * -> "
-const key_override_t kor_quot = ko_make_with_layers_and_negmods(0, KC_QUOT, JP_QUOT, ~0, MOD_MASK_SHIFT);
-const key_override_t kor_dquo = ko_make_with_layers(MOD_MASK_SHIFT, KC_QUOT, JP_DQUO, ~0);
+const key_override_t kor_dquo = ko_make_with_layers(MOD_MASK_SHIFT, KC_QUOT, S(KC_2), ~0);
 // `        全角半角 -> `
+const key_override_t kor_grv = ko_make_with_layers_and_negmods(0, KC_GRV, S(KC_LBRC), ~0, MOD_MASK_SHIFT);
 // shift+`  shift+全角半角 -> ~
-const key_override_t kor_grv = ko_make_with_layers_and_negmods(0, KC_GRV, JP_GRV, ~0, MOD_MASK_SHIFT);
-const key_override_t kor_tild = ko_make_with_layers(MOD_MASK_SHIFT, KC_GRV, JP_TILD, ~0);
+const key_override_t kor_tild = ko_make_with_layers(MOD_MASK_SHIFT, KC_GRV, S(KC_EQL), ~0);
+
+// shift+backspace -> delete
+const key_override_t kor_delete = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSPC, KC_DEL, ~0);
+
+// ALTER REPEAT KEY
+const key_override_t kor_alt_repeat = ko_make_with_layers(MOD_MASK_ALT, QK_REP, QK_AREP, ~0);
 
 const key_override_t **key_overrides = (const key_override_t *[]){
     &kor_at,
@@ -147,48 +152,56 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &kor_dquo,
     &kor_grv,
     &kor_tild,
+    &kor_delete,
+    &kor_alt_repeat,
     NULL
 };
 #endif // KEY_OVERRIDE_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case QK_MACRO_0:
+    case MY_MACRO_0:
       if (record->event.pressed) {
         // WIN + SPACE (JIS ⇔ US配列切替)
         SEND_STRING(SS_LGUI(SS_TAP(X_SPACE)));
       }
       return false;
-    case QK_MACRO_1:
+      break;
+    case MY_MACRO_1:
       if (record->event.pressed) {
         // CTRL + HOME (先頭へ移動)
         SEND_STRING(SS_LCTL(SS_TAP(X_HOME)));
       }
       return false;
-    case QK_MACRO_2:
+      break;
+    case MY_MACRO_2:
       if (record->event.pressed) {
         // CTRL + END (最後へ移動)
         SEND_STRING(SS_LCTL(SS_TAP(X_END)));
       }
       return false;
-    case QK_MACRO_5:
+      break;
+    case MY_MACRO_3:
       if (record->event.pressed) {
         // CTRL + F3 (カーソル位置の単語で次へ検索)
         SEND_STRING(SS_LCTL(SS_TAP(X_F3)));
       }
       return false;
-    case QK_MACRO_6:
+      break;
+    case MY_MACRO_4:
       if (record->event.pressed) {
         // ALT + F5 (VSCode: 差分を次へ検索)
         SEND_STRING(SS_LALT(SS_TAP(X_F5)));
       }
       return false;
-    case QK_MACRO_7:
+      break;
+    case MY_MACRO_5:
       if (record->event.pressed) {
         // click して行全体をコピー
         SEND_STRING(SS_TAP(X_BTN1) SS_TAP(X_HOME) SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)) SS_LCTL("c"));
       }
       return false;
+      break;
   }
 
   return true;
