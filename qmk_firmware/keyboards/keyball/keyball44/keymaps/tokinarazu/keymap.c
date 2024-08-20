@@ -172,11 +172,11 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
           } else {              // Otherwise, the last key was Tab,
               return S(KC_TAB); // ... and the reverse is Shift + Tab.
           }
-          berak;
+          break;
 
         case KC_DOT: 
           return M_UPDIR;
-          berak;
+          break;
     }
 
     return KC_TRNS;
