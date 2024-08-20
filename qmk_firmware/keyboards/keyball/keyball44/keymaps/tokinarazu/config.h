@@ -38,7 +38,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 #define AUTO_MOUSE_DEFAULT_LAYER 1
 
-#define TAPPING_TERM 160
+#define TAPPING_TERM 150
 #define QUICK_TAP_TERM 0
 #define PERMISSIVE_HOLD
+#define AUTO_MOUSE_TIME 500 // マウスが止まってから元のレイヤーに戻るまでの時間(ms)
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD

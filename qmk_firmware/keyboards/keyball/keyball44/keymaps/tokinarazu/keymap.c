@@ -24,13 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum custom_keycodes {
    MY_MACRO_0 = SAFE_RANGE,  // 0x7E40
-   MY_MACRO_1,
-   MY_MACRO_2,
-   MY_MACRO_3,
-   MY_MACRO_4,
-   MY_MACRO_5,
-   A_TO_J_TOGG,
-   MY_USER_0 = KEYBALL_SAFE_RANGE  // 0x7E40
+   MY_MACRO_1,  // 0x7E41
+   MY_MACRO_2,  // 0x7E42
+   MY_MACRO_3,  // 0x7E43
+   MY_MACRO_4,  // 0x7E44
+   MY_MACRO_5,  // 0x7E45
+   A2J_TOGG,  // 0x7E46
+   MY_USER_0 = KEYBALL_SAFE_RANGE + 32,  // 0x7E60
+   M_UPDIR,
 };
 
 // clang-format off
@@ -40,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
     LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
     KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
-                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REPEAT_KEY, LT(2,KC_ENT), KC_NO      , KC_NO  , A_TO_J_TOGG
+                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REP, LT(2,KC_ENT), KC_NO      , KC_NO  , A2J_TOGG
   ),
 
   [1] = LAYOUT_universal(
@@ -61,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______  , _______  , _______  , _______  , _______  , _______ ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , _______  ,
     _______  , _______  , _______  , _______  , _______  , _______ ,                                          S(KC_MINS) , KC_4  , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
     _______  , _______  , _______  , _______  , _______  , _______ ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , KC_NO    ,
-                  QK_BOOT  , KBC_SAVE  , _______  ,        _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_EQUAL
+                  QK_BOOT  , KBC_SAVE  , _______  ,        _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_EQL
   ),
 };
 // clang-format on
@@ -162,6 +163,25 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 static bool jis_mode = false;
 static uint16_t registered_key = KC_NO;
 
+uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
+    bool shifted = (mods & MOD_MASK_SHIFT);  // Was Shift held?
+    switch (keycode) {
+        case KC_TAB:
+          if (shifted) {        // If the last key was Shift + Tab,
+              return KC_TAB;    // ... the reverse is Tab.
+          } else {              // Otherwise, the last key was Tab,
+              return S(KC_TAB); // ... and the reverse is Shift + Tab.
+          }
+          berak;
+
+        case KC_DOT: 
+          return M_UPDIR;
+          berak;
+    }
+
+    return KC_TRNS;
+}
+
 bool is_jis_mode(void) {
   return jis_mode;
 }
@@ -215,6 +235,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
+    case M_UPDIR: 
+      SEND_STRING(/*.*/"./");
+      return false;
+      break;
+
     case KC_BSPC:
       if (record->event.pressed) {  // On key press.
         const uint8_t mods = get_mods();
@@ -245,7 +270,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    case A_TO_J_TOGG:
+    case QK_REP:
+      if (record->event.pressed) {  // On key press.
+        const uint8_t mods = get_mods();
+#ifndef NO_ACTION_ONESHOT
+        uint8_t alt_mods = (mods | get_oneshot_mods()) & MOD_MASK_ALT;
+#else
+        uint8_t alt_mods = mods & MOD_MASK_ALT;
+#endif  // NO_ACTION_ONESHOT
+        if (alt_mods) {  // At least one alt key is held.
+          registered_key = QK_AREP;
+          // If one alt is held, clear it from the mods. But if both
+          // alt are held, leave as is to send ALT + REPEAT_KEY.
+          if (alt_mods != MOD_MASK_ALT) {
+#ifndef NO_ACTION_ONESHOT
+            del_oneshot_mods(MOD_MASK_ALT);
+#endif  // NO_ACTION_ONESHOT
+            unregister_mods(MOD_MASK_ALT);
+          }
+        } else {
+          registered_key = QK_REP;
+        }
+
+        register_code(registered_key);
+        set_mods(mods);
+      } else {  // On key release.
+        unregister_code(registered_key);
+      }
+      return false;
+      break;
+
+    case A2J_TOGG:
       if (record->event.pressed) {
         set_jis_mode(!is_jis_mode());
       }
