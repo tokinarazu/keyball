@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_universal(
     KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
     LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
-    LSFT_T(KC_NO) , KC_Z , KC_X    , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
+    LSFT_T(KC_LSFT), KC_Z , KC_X    , KC_C     , KC_V     , KC_B     ,                                       KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
                   KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REP, LT(2,KC_ENT), KC_NO      , KC_NO  , A2J_TOGG
   ),
 
@@ -197,38 +197,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    case QK_REP:
-      if (record->event.pressed) {  // On key press.
-        const uint8_t mods = get_mods();
-#ifndef NO_ACTION_ONESHOT
-        uint8_t alt_mods = (mods | get_oneshot_mods()) & MOD_MASK_ALT;
-#else
-        uint8_t alt_mods = mods & MOD_MASK_ALT;
-#endif  // NO_ACTION_ONESHOT
-        if (alt_mods) {  // At least one alt key is held.
-          registered_key = QK_AREP;
-          // If one alt is held, clear it from the mods. But if both
-          // alt are held, leave as is to send ALT + REPEAT_KEY.
-          if (alt_mods != MOD_MASK_ALT) {
-#ifndef NO_ACTION_ONESHOT
-            del_oneshot_mods(MOD_MASK_ALT);
-#endif  // NO_ACTION_ONESHOT
-            unregister_mods(MOD_MASK_ALT);
-          }
-        } else {
-          registered_key = QK_REP;
-        }
-
-        register_code(registered_key);
-        set_mods(mods);
-      } else {  // On key release.
-        unregister_code(registered_key);
-      }
-      return false;
-      break;
-
     // holdで Shift、tapで Caps Word 起動
-    case LSFT_T(KC_NO):
+    case LSFT_T(KC_LSFT):
         if (record->tap.count && record->event.pressed) {
             caps_word_on(); // Turns Caps Word on
             return false;   // Return false to ignore further processing of key
