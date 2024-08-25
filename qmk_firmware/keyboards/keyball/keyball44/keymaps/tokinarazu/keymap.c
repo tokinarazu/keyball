@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
-#include "keyball.h"
 // #include "keymap_japanese.h"
 #include "features/translate_ansi_to_jis.h"
 #include "features/select_word.h"
