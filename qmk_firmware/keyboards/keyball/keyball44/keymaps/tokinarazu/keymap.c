@@ -87,21 +87,40 @@ void oledkit_render_info_user(void) {
 // [CUSTOM]
 static bool jis_mode = false;
 static uint16_t registered_key = KC_NO;
+static uint32_t last_key_pressed = 0;
 
 uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     bool shifted = (mods & MOD_MASK_SHIFT);  // Was Shift held?
     switch (keycode) {
-        case KC_TAB:
-          if (shifted) {        // If the last key was Shift + Tab,
-              return KC_TAB;    // ... the reverse is Tab.
-          } else {              // Otherwise, the last key was Tab,
-              return S(KC_TAB); // ... and the reverse is Shift + Tab.
-          }
-          break;
+      // Same-Finger Bigrams
+      case KC_E: return KC_D;  // For "ED" bigram.
+      case KC_D: return KC_E;  // For "DE" bigram.
+      case KC_C: return KC_E;  // For "CE" bigram.
+      case KC_L: return KC_O;  // For "LO" bigram.
+      case KC_U: return KC_N;  // For "UN" bigram.
+      case KC_M: return KC_U;  // For "MU" bigram.
+      case KC_J: return KC_U;  // For "JU" bigram.
+      case KC_N: return KC_U;  // For "NU" bigram.
+      case KC_Y: return KC_U;  // For "YU" bigram.
+      case KC_H: return KC_U;  // For "HU" bigram.
+      case KC_K: return KC_I;  // For "KI" bigram.
+      case KC_R: return KC_T;  // For "RT" bigram.
+      case KC_F: return KC_T;  // For "FT" bigram.
+      case KC_V: return KC_T;  // For "VT" bigram.
+      case KC_B: return KC_R;  // For "BR" bigram.
+      case KC_G: return KC_R;  // For "GR" bigram.
+      case KC_S: return KC_W;  // For "SW" bigram.
+      case KC_TAB:
+        if (shifted) {        // If the last key was Shift + Tab,
+            return KC_TAB;    // ... the reverse is Tab.
+        } else {              // Otherwise, the last key was Tab,
+            return S(KC_TAB); // ... and the reverse is Shift + Tab.
+        }
+        break;
 
-        case KC_DOT: 
-          return M_UPDIR;
-          break;
+      case KC_DOT: 
+        return M_UPDIR;
+        break;
     }
 
     return KC_TRNS;
@@ -115,7 +134,20 @@ void set_jis_mode(bool is_jis_mode) {
   jis_mode = is_jis_mode;
 }
 
+void set_disable_ime(void) {
+  tap_code16(KC_LNG2);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.pressed) {
+    uint32_t now = timer_read32();
+    if (TIMER_DIFF_32(now, last_key_pressed) > AUTO_DISABLE_IME_TIME) {
+      set_disable_ime();
+    }
+
+    last_key_pressed = now;
+  }
+
   switch (keycode) {
     case MY_MACRO_0:
       if (record->event.pressed) {
