@@ -29,7 +29,7 @@ enum custom_keycodes {
    MY_MACRO_3,  // 0x7E43
    MY_MACRO_4,  // 0x7E44
    MY_MACRO_5,  // 0x7E45
-   A2J_TOGG,  // 0x7E46
+   A2J_TOGG,    // 0x7E46
    MY_USER_0 = KEYBALL_SAFE_RANGE + 32,  // 0x7E60
    M_UPDIR,
 };
@@ -41,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
     LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
     LSFT_T(KC_LSFT), KC_Z , KC_X    , KC_C     , KC_V     , KC_B     ,                                       KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
-                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REP, LT(2,KC_ENT), KC_NO      , KC_NO  , A2J_TOGG
+                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REP, LT(2,KC_ENT) , KC_NO    , KC_NO  , A2J_TOGG
   ),
 
   [1] = LAYOUT_universal(
@@ -78,7 +78,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    include "lib/oledkit/oledkit.h"
 
 void oledkit_render_info_user(void) {
-    keyball_oled_render_keyinfo();
+//    keyball_oled_render_keyinfo();
+    keyball_oled_render_keyinfo_custom();
     keyball_oled_render_ballinfo();
     keyball_oled_render_layerinfo();
 }
@@ -88,6 +89,57 @@ void oledkit_render_info_user(void) {
 static bool jis_mode = false;
 static uint16_t registered_key = KC_NO;
 static uint32_t last_key_pressed = 0;
+
+void keyball_oled_render_keyinfo_custom(void) {
+#ifdef OLED_ENABLE
+    // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
+    //
+    // Where `kc` is 16 bit of keycode.
+    //
+    // `row`, `col`, and `kc` indicates the last processed key,
+    // but `name`s indicate unreleased keys in best effort.
+    //
+    // It is aligned to fit with output of keyball_oled_render_ballinfo().
+    // For example:
+    //
+    //     Key :  R2  C3 K06 CW on/off
+    //     Ball:   0   0   0   0
+
+    // "Key" Label
+    oled_write_P(PSTR("Key \xB1"), false);
+
+    // Row and column
+    oled_write_char('\xB8', false);
+    oled_write_char(to_1x(keyball.last_pos.row), false);
+    oled_write_char('\xB9', false);
+    oled_write_char(to_1x(keyball.last_pos.col), false);
+
+    // Keycode
+    oled_write_P(PSTR("\xBA\xBB"), false);
+    oled_write_char(to_1x(keyball.last_kc >> 12), false);
+    oled_write_char(to_1x(keyball.last_kc >> 8), false);
+    oled_write_char(to_1x(keyball.last_kc >> 4), false);
+    oled_write_char(to_1x(keyball.last_kc), false);
+
+    // indicate jis mode: on/off
+    /*
+    oled_write_P(PSTR(" JIS\xB1"), false);
+    if (is_jis_mode()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+    */
+
+    // indicate Caps Word mode: on/off
+    oled_write_P(PSTR(" CW\xB1"), false);
+    if (is_caps_word_on()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+#endif
+}
 
 uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     bool shifted = (mods & MOD_MASK_SHIFT);  // Was Shift held?
