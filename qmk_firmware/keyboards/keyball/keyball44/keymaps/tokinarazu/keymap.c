@@ -79,21 +79,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #    include "lib/oledkit/oledkit.h"
 
-void oledkit_render_info_user(void) {
-//    keyball_oled_render_keyinfo();
-    keyball_oled_render_keyinfo_custom();
-    keyball_oled_render_ballinfo();
-    keyball_oled_render_layerinfo();
-}
-#endif
-
 // [CUSTOM]
-static bool jis_mode = false;
-static uint16_t registered_key = KC_NO;
-static uint32_t last_key_pressed = 0;
-
 void keyball_oled_render_keyinfo_custom(void) {
-#ifdef OLED_ENABLE
     // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
     //
     // Where `kc` is 16 bit of keycode.
@@ -140,8 +127,20 @@ void keyball_oled_render_keyinfo_custom(void) {
     } else {
         oled_write_P(LFSTR_OFF, false);
     }
-#endif
 }
+
+void oledkit_render_info_user(void) {
+//    keyball_oled_render_keyinfo();
+    keyball_oled_render_keyinfo_custom();
+    keyball_oled_render_ballinfo();
+    keyball_oled_render_layerinfo();
+}
+#endif
+
+// [CUSTOM]
+static bool jis_mode = false;
+static uint16_t registered_key = KC_NO;
+static uint32_t last_key_pressed = 0;
 
 uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     bool shifted = (mods & MOD_MASK_SHIFT);  // Was Shift held?
