@@ -80,9 +80,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    include "lib/oledkit/oledkit.h"
 
 // [CUSTOM]
-// const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
-// static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
-// static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
+const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
+static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
+static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
 static bool jis_mode = false;
 
 bool is_jis_mode(void) {
@@ -93,7 +93,6 @@ void set_jis_mode(bool is_jis_mode) {
   jis_mode = is_jis_mode;
 }
 
-/*
 static const char *format_4d(int8_t d) {
     static char buf[5] = {0}; // max width (4) + NUL (1)
     char        lead   = ' ';
@@ -126,6 +125,7 @@ static char to_1x(uint8_t x) {
     return x < 10 ? x + '0' : x + 'a' - 10;
 }
 
+/*
 uint8_t keyball_get_cpi(void) {
     return keyball.cpi_value == 0 ? CPI_DEFAULT : keyball.cpi_value;
 }
