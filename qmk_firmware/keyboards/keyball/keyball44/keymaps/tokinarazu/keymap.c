@@ -80,7 +80,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    include "lib/oledkit/oledkit.h"
 
 // [CUSTOM]
-// const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
 static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
 static bool jis_mode = false;
@@ -124,24 +123,6 @@ static char to_1x(uint8_t x) {
     x &= 0x0f;
     return x < 10 ? x + '0' : x + 'a' - 10;
 }
-
-/*
-uint8_t keyball_get_cpi(void) {
-    return keyball.cpi_value == 0 ? CPI_DEFAULT : keyball.cpi_value;
-}
-
-keyball_scrollsnap_mode_t keyball_get_scrollsnap_mode(void) {
-#if KEYBALL_SCROLLSNAP_ENABLE == 2
-    return keyball.scrollsnap_mode;
-#else
-    return 0;
-#endif
-}
-
-uint8_t keyball_get_scroll_div(void) {
-    return keyball.scroll_div == 0 ? KEYBALL_SCROLL_DIV_DEFAULT : keyball.scroll_div;
-}
-*/
 
 void keyball_oled_render_keyinfo_custom(void) {
     // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
