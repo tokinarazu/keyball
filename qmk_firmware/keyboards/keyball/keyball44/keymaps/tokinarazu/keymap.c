@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 // #include "keymap_japanese.h"
 #include "features/translate_ansi_to_jis.h"
+#include "features/select_word.h"
 
 enum custom_keycodes {
    MY_MACRO_0 = SAFE_RANGE,  // 0x7E40
@@ -30,6 +31,7 @@ enum custom_keycodes {
    MY_MACRO_4,  // 0x7E44
    MY_MACRO_5,  // 0x7E45
    A2J_TOGG,    // 0x7E46
+   SELWORD,     // 0x7E47
    MY_USER_0 = KEYBALL_SAFE_RANGE + 32,  // 0x7E60
    M_UPDIR,
 };
@@ -45,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [1] = LAYOUT_universal(
-    _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     KC_ENT   , KC_HOME  , KC_UP    , KC_END   , KC_F6    , KC_F7    ,
+    _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     SELWORD  , KC_HOME  , KC_UP    , KC_END   , KC_F6    , KC_F7    ,
     _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , KC_F8    , KC_F9    ,
     _______  ,  KC_F1   , KC_F2     , KC_F4   , KC_F4     , KC_F5  ,                                         KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_F10   , KC_F11   ,
                   _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_F12
@@ -199,6 +201,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     last_key_pressed = now;
   }
+
+  if (!process_select_word(keycode, record, SELWORD)) { return false; }
 
   switch (keycode) {
     case MY_MACRO_0:

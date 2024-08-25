@@ -10,3 +10,4 @@ REPEAT_KEY_ENABLE = yes
 CAPS_WORD_ENABLE = yes
 
 SRC += features/translate_ansi_to_jis.c
+SRC += features/select_word.c
