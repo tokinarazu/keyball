@@ -80,9 +80,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    include "lib/oledkit/oledkit.h"
 
 // [CUSTOM]
-const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
-static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
-static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
+// const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
+// static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
+// static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
 static bool jis_mode = false;
 
 bool is_jis_mode(void) {
@@ -93,6 +93,7 @@ void set_jis_mode(bool is_jis_mode) {
   jis_mode = is_jis_mode;
 }
 
+/*
 static const char *format_4d(int8_t d) {
     static char buf[5] = {0}; // max width (4) + NUL (1)
     char        lead   = ' ';
@@ -140,6 +141,7 @@ keyball_scrollsnap_mode_t keyball_get_scrollsnap_mode(void) {
 uint8_t keyball_get_scroll_div(void) {
     return keyball.scroll_div == 0 ? KEYBALL_SCROLL_DIV_DEFAULT : keyball.scroll_div;
 }
+*/
 
 void keyball_oled_render_keyinfo_custom(void) {
     // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
