@@ -148,15 +148,15 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_pos.col), false);
 
     // Keycode
-    oled_write_P(PSTR("\xBA\xBB "), false);
+    oled_write_P(PSTR("\xBA\xBB:"), false);
     oled_write_char(to_1x(keyball.last_kc >> 12), false);
     oled_write_char(to_1x(keyball.last_kc >> 8), false);
     oled_write_char(to_1x(keyball.last_kc >> 4), false);
     oled_write_char(to_1x(keyball.last_kc), false);
 
-    // indicate Caps Word mode: on/off
-    oled_write_P(PSTR(" CW"), false);
-    if (is_caps_word_on()) {
+    // indicate jis mode: on/off
+    oled_write_P(PSTR(" JP"), false);
+    if (is_jis_mode()) {
         oled_write_P(LFSTR_ON, false);
     } else {
         oled_write_P(LFSTR_OFF, false);
@@ -177,9 +177,9 @@ void keyball_oled_render_ballinfo_custom(void) {
 //    oled_write(format_4d(keyball.last_mouse.h), false);
 //    oled_write(format_4d(keyball.last_mouse.v), false);
 
-    // indicate jis mode: on/off
-    oled_write_P(PSTR("   JIS"), false);
-    if (is_jis_mode()) {
+    // indicate Caps Word mode: on/off
+    oled_write_P(PSTR("    CW"), false);
+    if (is_caps_word_on()) {
         oled_write_P(LFSTR_ON, false);
     } else {
         oled_write_P(LFSTR_OFF, false);
@@ -229,7 +229,6 @@ void oledkit_render_info_user(void) {
 
 // [CUSTOM]
 static uint16_t registered_key = KC_NO;
-static uint32_t last_key_pressed = 0;
 
 uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     bool shifted = (mods & MOD_MASK_SHIFT);  // Was Shift held?
@@ -274,6 +273,7 @@ void set_disable_ime(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
+    static uint32_t last_key_pressed = 0;
     uint32_t now = timer_read32();
     if (TIMER_DIFF_32(now, last_key_pressed) > AUTO_DISABLE_IME_TIME) {
       set_disable_ime();
