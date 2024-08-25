@@ -80,7 +80,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    include "lib/oledkit/oledkit.h"
 
 // [CUSTOM]
-const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
+// const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
 static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
 static bool jis_mode = false;
