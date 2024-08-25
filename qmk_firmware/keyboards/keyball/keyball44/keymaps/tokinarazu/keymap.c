@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
-// #include "keymap_japanese.h"
+#include "lib/keyball/keyball.h"
 #include "features/translate_ansi_to_jis.h"
 #include "features/select_word.h"
 
@@ -82,6 +82,15 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // [CUSTOM]
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
 static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
+static bool jis_mode = false;
+
+bool is_jis_mode(void) {
+  return jis_mode;
+}
+
+void set_jis_mode(bool is_jis_mode) {
+  jis_mode = is_jis_mode;
+}
 
 static const char *format_4d(int8_t d) {
     static char buf[5] = {0}; // max width (4) + NUL (1)
@@ -155,7 +164,7 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_pos.col), false);
 
     // Keycode
-    oled_write_P(PSTR("\xBA\xBB"), false);
+    oled_write_P(PSTR("\xBA\xBB "), false);
     oled_write_char(to_1x(keyball.last_kc >> 12), false);
     oled_write_char(to_1x(keyball.last_kc >> 8), false);
     oled_write_char(to_1x(keyball.last_kc >> 4), false);
@@ -235,7 +244,6 @@ void oledkit_render_info_user(void) {
 #endif
 
 // [CUSTOM]
-static bool jis_mode = false;
 static uint16_t registered_key = KC_NO;
 static uint32_t last_key_pressed = 0;
 
@@ -274,14 +282,6 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     }
 
     return KC_TRNS;
-}
-
-bool is_jis_mode(void) {
-  return jis_mode;
-}
-
-void set_jis_mode(bool is_jis_mode) {
-  jis_mode = is_jis_mode;
 }
 
 void set_disable_ime(void) {
