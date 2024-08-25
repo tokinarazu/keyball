@@ -79,7 +79,15 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #    include "lib/oledkit/oledkit.h"
 
+static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
+static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
+
 // [CUSTOM]
+static char to_1x(uint8_t x) {
+    x &= 0x0f;
+    return x < 10 ? x + '0' : x + 'a' - 10;
+}
+
 void keyball_oled_render_keyinfo_custom(void) {
     // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
     //
