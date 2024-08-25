@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
+#include "keyball.h"
 // #include "keymap_japanese.h"
 #include "features/translate_ansi_to_jis.h"
 #include "features/select_word.h"
@@ -79,13 +80,56 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #    include "lib/oledkit/oledkit.h"
 
+// [CUSTOM]
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
 static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
 
-// [CUSTOM]
+static const char *format_4d(int8_t d) {
+    static char buf[5] = {0}; // max width (4) + NUL (1)
+    char        lead   = ' ';
+    if (d < 0) {
+        d    = -d;
+        lead = '-';
+    }
+    buf[3] = (d % 10) + '0';
+    d /= 10;
+    if (d == 0) {
+        buf[2] = lead;
+        lead   = ' ';
+    } else {
+        buf[2] = (d % 10) + '0';
+        d /= 10;
+    }
+    if (d == 0) {
+        buf[1] = lead;
+        lead   = ' ';
+    } else {
+        buf[1] = (d % 10) + '0';
+        d /= 10;
+    }
+    buf[0] = lead;
+    return buf;
+}
+
 static char to_1x(uint8_t x) {
     x &= 0x0f;
     return x < 10 ? x + '0' : x + 'a' - 10;
+}
+
+uint8_t keyball_get_cpi(void) {
+    return keyball.cpi_value == 0 ? CPI_DEFAULT : keyball.cpi_value;
+}
+
+keyball_scrollsnap_mode_t keyball_get_scrollsnap_mode(void) {
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+    return keyball.scrollsnap_mode;
+#else
+    return 0;
+#endif
+}
+
+uint8_t keyball_get_scroll_div(void) {
+    return keyball.scroll_div == 0 ? KEYBALL_SCROLL_DIV_DEFAULT : keyball.scroll_div;
 }
 
 void keyball_oled_render_keyinfo_custom(void) {
@@ -118,18 +162,8 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_kc >> 4), false);
     oled_write_char(to_1x(keyball.last_kc), false);
 
-    // indicate jis mode: on/off
-    /*
-    oled_write_P(PSTR(" JIS\xB1"), false);
-    if (is_jis_mode()) {
-        oled_write_P(LFSTR_ON, false);
-    } else {
-        oled_write_P(LFSTR_OFF, false);
-    }
-    */
-
     // indicate Caps Word mode: on/off
-    oled_write_P(PSTR(" CW\xB1"), false);
+    oled_write_P(PSTR(" CW"), false);
     if (is_caps_word_on()) {
         oled_write_P(LFSTR_ON, false);
     } else {
@@ -137,10 +171,66 @@ void keyball_oled_render_keyinfo_custom(void) {
     }
 }
 
+void keyball_oled_render_ballinfo_custom(void) {
+    // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
+    //
+    // Output example:
+    //
+    //     Ball: -12  34   0   0
+
+    // 1st line, "Ball" label, mouse x, y, h, and v.
+    oled_write_P(PSTR("Ball\xB1"), false);
+    oled_write(format_4d(keyball.last_mouse.x), false);
+    oled_write(format_4d(keyball.last_mouse.y), false);
+//    oled_write(format_4d(keyball.last_mouse.h), false);
+//    oled_write(format_4d(keyball.last_mouse.v), false);
+
+    // indicate jis mode: on/off
+    oled_write_P(PSTR("   JIS"), false);
+    if (is_jis_mode()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+
+    // 2nd line, empty label and CPI
+    oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
+    oled_write(format_4d(keyball_get_cpi()) + 1, false);
+    oled_write_P(PSTR("00 "), false);
+
+    // indicate scroll snap mode: "VT" (vertical), "HN" (horiozntal), and "SCR" (free)
+#if 1 && KEYBALL_SCROLLSNAP_ENABLE == 2
+    switch (keyball_get_scrollsnap_mode()) {
+        case KEYBALL_SCROLLSNAP_MODE_VERTICAL:
+            oled_write_P(PSTR("VT"), false);
+            break;
+        case KEYBALL_SCROLLSNAP_MODE_HORIZONTAL:
+            oled_write_P(PSTR("HO"), false);
+            break;
+        default:
+            oled_write_P(PSTR("\xBE\xBF"), false);
+            break;
+    }
+#else
+    oled_write_P(PSTR("\xBE\xBF"), false);
+#endif
+    // indicate scroll mode: on/off
+    if (keyball.scroll_mode) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+
+    // indicate scroll divider:
+    oled_write_P(PSTR(" \xC0\xC1"), false);
+    oled_write_char('0' + keyball_get_scroll_div(), false);
+}
+
 void oledkit_render_info_user(void) {
 //    keyball_oled_render_keyinfo();
     keyball_oled_render_keyinfo_custom();
-    keyball_oled_render_ballinfo();
+//    keyball_oled_render_ballinfo();
+    keyball_oled_render_ballinfo_custom();
     keyball_oled_render_layerinfo();
 }
 #endif
