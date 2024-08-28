@@ -44,7 +44,7 @@ uint16_t find(uint16_t kc) {
 uint16_t pushing_shift_embeded_basic_kc = PUSH_NONE;
 
 bool process_record_user_a2j(uint16_t kc, keyrecord_t *record) {
-    if (kc > QK_MOD_TAP_MAX) return NOT_HANDLED;
+    if (kc > QK_LAYER_TAP_MAX) return NOT_HANDLED;
 
     uint8_t mods_kc  = QK_MODS_GET_MODS(kc);
     uint8_t basic_kc = QK_MODS_GET_BASIC_KEYCODE(kc);

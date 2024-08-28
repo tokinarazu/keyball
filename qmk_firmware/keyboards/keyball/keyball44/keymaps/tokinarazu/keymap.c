@@ -54,9 +54,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [2] = LAYOUT_universal(
-    _______  ,KC_QUOT   , S(KC_COMM)  , S(KC_DOT) , S(KC_QUOT) , KC_DOT  ,                                   S(KC_7)    , KC_LBRC    , KC_RBRC    , KC_SCLN    , S(KC_5)    , QK_GESC  ,
-    _______  ,S(KC_1)   , KC_MINS     , S(KC_EQL) , KC_EQL     , S(KC_3)  ,                                  S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) , S(KC_MINS)  ,
-    _______  ,S(KC_6)   , KC_SLSH     , S(KC_8)   , KC_BSLS    , KC_GRV ,                                    KC_COMM    , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    , S(KC_GRV) ,
+    _______  ,S(KC_3)   , S(KC_COMM)  , S(KC_DOT) , KC_DOT     , KC_GRV  ,                                   S(KC_7)    , KC_LBRC    , KC_RBRC    , KC_SCLN    , S(KC_5)    , QK_GESC  ,
+    _______  ,S(KC_1)   , KC_MINS     , S(KC_EQL) , KC_EQL     , KC_QUOT  ,                                  S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) , S(KC_MINS) ,
+    _______  ,S(KC_6)   , KC_SLSH     , S(KC_8)   , KC_BSLS    , S(KC_QUOT) ,                                S(KC_GRV)  , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    , KC_COMM ,
                   _______  , _______  , _______  ,         _______  , _______  ,                   QK_AREP  , _______ , _______       , _______  , _______
   ),
 
