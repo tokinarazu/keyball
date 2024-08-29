@@ -51,7 +51,7 @@ bool process_record_user_a2j(uint16_t kc, keyrecord_t *record) {
 
     if (record->event.pressed) {
         // Continue default handling if this is a tap-hold key being held.
-        if ((IS_QK_MOD_TAP(keycode) || IS_QK_LAYER_TAP(keycode)) &&
+        if ((IS_QK_MOD_TAP(kc) || IS_QK_LAYER_TAP(kc)) &&
           record->tap.count == 0) {
           return NOT_HANDLED;
         }
