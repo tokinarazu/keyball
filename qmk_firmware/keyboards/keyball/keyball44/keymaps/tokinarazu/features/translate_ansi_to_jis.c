@@ -50,6 +50,12 @@ bool process_record_user_a2j(uint16_t kc, keyrecord_t *record) {
     uint8_t basic_kc = QK_MODS_GET_BASIC_KEYCODE(kc);
 
     if (record->event.pressed) {
+        // Continue default handling if this is a tap-hold key being held.
+        if ((IS_QK_MOD_TAP(keycode) || IS_QK_LAYER_TAP(keycode)) &&
+          record->tap.count == 0) {
+          return NOT_HANDLED;
+        }
+
         uint8_t  mod_state                    = get_mods();
         bool     shift_state_or_shift_embeded = (mod_state | mods_kc) & MOD_MASK_SHIFT;
         uint16_t shift_embeded_basic_kc       = shift_state_or_shift_embeded ? S((uint16_t)basic_kc) : basic_kc;

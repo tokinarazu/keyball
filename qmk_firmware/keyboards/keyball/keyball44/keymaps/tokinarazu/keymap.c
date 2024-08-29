@@ -64,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______  , _______  , _______  , _______  , _______  , _______ ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , _______  ,
     _______  , _______  , _______  , _______  , _______  , _______ ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
     _______  , _______  , _______  , _______  , _______  , _______ ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , KC_NO    ,
-                  QK_BOOT  , KBC_SAVE  , _______  ,        _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_EQL
+                  QK_BOOT  , KBC_SAVE  , _______  ,        _______  , _______  ,                   QK_BOOT  , _______  , _______       , _______  , KC_EQL
   ),
 };
 // clang-format on
@@ -77,7 +77,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #ifdef OLED_ENABLE
 
-#    include "lib/oledkit/oledkit.h"
+#include "lib/oledkit/oledkit.h"
 
 // [CUSTOM]
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
