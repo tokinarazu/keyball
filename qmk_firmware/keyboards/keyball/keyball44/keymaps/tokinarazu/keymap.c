@@ -32,6 +32,7 @@ enum custom_keycodes {
    MY_MACRO_5,  // 0x7E45
    A2J_TOGG,    // 0x7E46
    SELWORD,     // 0x7E47
+   ARROW,       // 0x7E48
    MY_USER_0 = KEYBALL_SAFE_RANGE + 32,  // 0x7E60
    M_UPDIR,
 };
@@ -40,31 +41,31 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [0] = LAYOUT_universal(
-    KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
+    KC_LGUI   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                       KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
     LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
     LSFT_T(KC_LSFT), KC_Z , KC_X    , KC_C     , KC_V     , KC_B     ,                                       KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
-                  KC_LALT , KC_LGUI , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,                QK_REP, LT(2,KC_ENT) , KC_NO    , KC_NO  , A2J_TOGG
+                  KC_LALT , KC_TAB  , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,            QK_REP   , LT(2,KC_ENT) , XXXXXXX   , XXXXXXX  , A2J_TOGG
   ),
 
   [1] = LAYOUT_universal(
-    _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     SELWORD  , KC_HOME  , KC_UP    , KC_END   , KC_F6    , KC_F7    ,
-    _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , KC_F8    , KC_F9    ,
-    _______  ,  KC_F1   , KC_F2     , KC_F4   , KC_F4     , KC_F5  ,                                         KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_F10   , KC_F11   ,
-                  _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_F12
+    _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     SELWORD  , KC_HOME  , KC_UP    , KC_END   , XXXXXXX  , XXXXXXX  ,
+    _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , XXXXXXX  , XXXXXXX  ,
+    _______  ,  XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX   , ARROW ,                                          KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , XXXXXXX  , XXXXXXX  ,
+                  _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , XXXXXXX
   ),
 
   [2] = LAYOUT_universal(
-    _______  ,S(KC_3)   , S(KC_COMM)  , S(KC_DOT) , KC_DOT     , KC_GRV  ,                                   S(KC_7)    , KC_LBRC    , KC_RBRC    , KC_SCLN    , S(KC_5)    , QK_GESC  ,
-    _______  ,S(KC_1)   , KC_MINS     , S(KC_EQL) , KC_EQL     , KC_QUOT  ,                                  S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) , S(KC_MINS) ,
-    _______  ,S(KC_6)   , KC_SLSH     , S(KC_8)   , KC_BSLS    , S(KC_QUOT) ,                                S(KC_GRV)  , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    , KC_COMM ,
-                  _______  , _______  , _______  ,         _______  , _______  ,                   QK_AREP  , _______ , _______       , _______  , _______
+    _______  ,S(KC_3)   , S(KC_COMM)  , S(KC_DOT) , KC_SCLN    , KC_GRV  ,                                   S(KC_7)    , KC_LBRC    , KC_RBRC    , S(KC_MINS) , S(KC_5)    , KC_BSPC ,
+    _______  ,S(KC_1)   , KC_MINS     , S(KC_EQL) , KC_EQL     , S(KC_QUOT) ,                                S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) , KC_DOT ,
+    _______  ,S(KC_6)   , KC_SLSH     , S(KC_8)   , KC_BSLS    , KC_QUOT ,                                   S(KC_GRV)  , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    , KC_COMM ,
+                  _______  , _______ , _______  ,         _______  , _______  ,                   QK_AREP  , _______ , _______       , _______  , _______
   ),
 
   [3] = LAYOUT_universal(
-    _______  , _______  , _______  , _______  , _______  , _______ ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , _______  ,
-    _______  , _______  , _______  , _______  , _______  , _______ ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
-    _______  , _______  , _______  , _______  , _______  , _______ ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , KC_NO    ,
-                  QK_BOOT  , KBC_SAVE  , _______  ,        _______  , _______  ,                   QK_BOOT  , _______  , _______       , _______  , KC_EQL
+    _______  , KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10  ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , _______  ,
+    _______  , KC_PSCR  , KC_F2    , KC_F3    , KC_F4    , KC_F5   ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
+    _______  , _______  , _______  , _______  , KC_F11   , KC_F12  ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , XXXXXXX  ,
+                  _______  , _______  , QK_BOOT  ,         _______  , KBC_SAVE ,                  QK_BOOT  , _______  , _______       , _______  , KC_EQL
   ),
 };
 // clang-format on
@@ -284,6 +285,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (!process_select_word(keycode, record, SELWORD)) { return false; }
 
+  const uint8_t mods = get_mods();
+#ifndef NO_ACTION_ONESHOT
+  uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+#else
+  uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+#endif  // NO_ACTION_ONESHOT
+
   switch (keycode) {
     case MY_MACRO_0:
       if (record->event.pressed) {
@@ -328,6 +336,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
+    case ARROW:  // Arrow macro, types -> or =>.
+      if (record->event.pressed) {
+        if (shift_mods) {
+          if (shift_mods != MOD_MASK_SHIFT) {
+#ifndef NO_ACTION_ONESHOT
+            del_oneshot_mods(MOD_MASK_SHIFT);
+#endif  // NO_ACTION_ONESHOT
+            unregister_mods(MOD_MASK_SHIFT);
+          }
+          SEND_STRING("=>");
+          register_mods(mods);            // Restore mods.
+        } else {
+          SEND_STRING("->");
+        }
+      }
+//      return false;
+      break;
+
     case M_UPDIR:
       if (record->event.pressed) {
         SEND_STRING(/*.*/"./");
@@ -337,12 +363,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KC_BSPC:
       if (record->event.pressed) {  // On key press.
-        const uint8_t mods = get_mods();
-#ifndef NO_ACTION_ONESHOT
-        uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
-#else
-        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
-#endif  // NO_ACTION_ONESHOT
         if (shift_mods) {  // At least one shift key is held.
           registered_key = KC_DEL;
           // If one shift is held, clear it from the mods. But if both
