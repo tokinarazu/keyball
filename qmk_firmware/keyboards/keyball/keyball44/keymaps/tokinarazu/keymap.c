@@ -50,22 +50,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [1] = LAYOUT_universal(
     _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     SELWORD  , KC_HOME  , KC_UP    , KC_END   , XXXXXXX  , XXXXXXX  ,
     _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , XXXXXXX  , XXXXXXX  ,
-    _______  ,  XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX   , ARROW ,                                          KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , XXXXXXX  , XXXXXXX  ,
+    _______  ,  XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX   , ARROW ,                                          KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_BTN4  , KC_BTN5  ,
                   _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , XXXXXXX
   ),
 
   [2] = LAYOUT_universal(
-    _______  ,S(KC_3)   , S(KC_COMM)  , S(KC_DOT) , KC_SCLN    , KC_GRV  ,                                   S(KC_7)    , KC_LBRC    , KC_RBRC    , S(KC_MINS) , S(KC_5)    , KC_BSPC ,
-    _______  ,S(KC_1)   , KC_MINS     , S(KC_EQL) , KC_EQL     , S(KC_QUOT) ,                                S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) , KC_DOT ,
-    _______  ,S(KC_6)   , KC_SLSH     , S(KC_8)   , KC_BSLS    , KC_QUOT ,                                   S(KC_GRV)  , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    , KC_COMM ,
-                  _______  , _______ , _______  ,         _______  , _______  ,                   QK_AREP  , _______ , _______       , _______  , _______
+    _______  , KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10  ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , KC_BSPC  ,
+    _______  , KC_PSCR  , KC_F2    , KC_F3    , KC_F4    , KC_F5   ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
+    _______  , _______  , _______  , _______  , KC_F11   , KC_F12  ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , XXXXXXX  ,
+                  _______  , _______ , _______  ,         _______  , _______  ,                   QK_AREP  , _______  , _______       , _______  , KC_EQL
   ),
 
   [3] = LAYOUT_universal(
-    _______  , KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10  ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , _______  ,
-    _______  , KC_PSCR  , KC_F2    , KC_F3    , KC_F4    , KC_F5   ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
-    _______  , _______  , _______  , _______  , KC_F11   , KC_F12  ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , XXXXXXX  ,
-                  _______  , _______  , QK_BOOT  ,         _______  , KBC_SAVE ,                  QK_BOOT  , _______  , _______       , _______  , KC_EQL
+    _______  ,S(KC_3)   , S(KC_COMM)  , S(KC_DOT) , KC_SCLN    , KC_GRV  ,                                   S(KC_7)    , KC_LBRC    , KC_RBRC    , S(KC_MINS) , S(KC_5)    , _______ ,
+    _______  ,S(KC_1)   , KC_MINS     , S(KC_EQL) , KC_EQL     , S(KC_QUOT) ,                                S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) , KC_DOT ,
+    _______  ,S(KC_6)   , KC_SLSH     , S(KC_8)   , KC_BSLS    , KC_QUOT ,                                   S(KC_GRV)  , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    , KC_COMM ,
+                  _______  , _______  , QK_BOOT  ,         _______  , KBC_SAVE ,                  QK_BOOT  , _______  , _______       , _______  , A2J_TOGG
   ),
 };
 // clang-format on
