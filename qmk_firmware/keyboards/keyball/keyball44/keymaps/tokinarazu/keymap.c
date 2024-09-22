@@ -41,9 +41,9 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [0] = LAYOUT_universal(
-    KC_LGUI   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                       KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
-    LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J) , RSFT_T(KC_K)    , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
-    LSFT_T(KC_LSFT), KC_Z , KC_X    , KC_C     , KC_V     , KC_B     ,                                       KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , LT(3,KC_QUOT) ,
+    KC_ESC        , KC_Q  , KC_W    , KC_E     , KC_R     , KC_T     ,                                       KC_Y     , KC_U          , KC_I     , KC_O     , KC_P     , KC_BSPC   ,
+    LCTL_T(KC_ESC), LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                         KC_H     , LCTL_T(KC_J)  , RSFT_T(KC_K) , LALT_T(KC_L) , LT(1,KC_SCLN) , KC_MINUS ,
+    LSFT_T(KC_LSFT), KC_Z , KC_X    , KC_C     , KC_V     , KC_B     ,                                       KC_N     , KC_M          , KC_COMM  , KC_DOT   , LT(3,KC_SLSH), LT(3,KC_QUOT) ,
                   KC_LALT , KC_TAB  , LT(2,KC_LNG2)   , LT(3,KC_SPC) , LT(1,KC_LNG1) ,            QK_REP   , LT(2,KC_ENT) , XXXXXXX   , XXXXXXX  , A2J_TOGG
   ),
 
@@ -51,14 +51,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______  ,  KC_PGUP , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                     SELWORD  , KC_HOME  , KC_UP    , KC_END   , XXXXXXX  , XXXXXXX  ,
     _______  ,  KC_HOME , MY_MACRO_1, KC_PGDN , MY_MACRO_3, MY_MACRO_4 ,                                     KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , XXXXXXX  , XXXXXXX  ,
     _______  ,  XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX   , ARROW ,                                          KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_BTN4  , KC_BTN5  ,
-                  _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , XXXXXXX
+                  _______  , _______ , _______  ,         _______  , _______  ,                   _______  , _______  , _______       , _______  , KC_MUTE
   ),
 
   [2] = LAYOUT_universal(
     _______  , KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10  ,                                          S(KC_8)  , KC_7    , KC_8     , KC_9     , KC_SLSH  , KC_BSPC  ,
-    _______  , KC_PSCR  , KC_F2    , KC_F3    , KC_F4    , KC_F5   ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , S(KC_SCLN) ,
+    _______  , KC_PSCR  , KC_F2    , KC_F3    , KC_F4    , KC_F5   ,                                          S(KC_EQL), KC_4    , KC_5     , KC_6     , KC_MINUS , XXXXXXX  ,
     _______  , _______  , _______  , _______  , KC_F11   , KC_F12  ,                                          KC_0     , KC_1    , KC_2     , KC_3     , KC_DOT   , XXXXXXX  ,
-                  _______  , _______ , _______  ,         _______  , _______  ,                   QK_AREP  , _______  , _______       , _______  , KC_EQL
+                  _______  , _______ , _______  ,         _______  , _______  ,                   QK_AREP  , _______  , _______       , _______  , S(KC_SCLN)
   ),
 
   [3] = LAYOUT_universal(
@@ -219,12 +219,40 @@ void keyball_oled_render_ballinfo_custom(void) {
     oled_write_char('0' + keyball_get_scroll_div(), false);
 }
 
+#ifdef DYNAMIC_MACRO_ENABLE
+// Dynamic Macros: Record and Replay Macros in Runtime
+// https://github.com/qmk/qmk_firmware/blob/master/docs/feature_dynamic_macros.md
+
+bool isRecording = false;
+// Triggered when you start recording a macro.
+void dynamic_macro_record_start_user(void) {
+    isRecording = true;
+}
+
+// Triggered when you play back a macro.
+void dynamic_macro_play_user(int8_t direction) {
+}
+
+// Triggered on each keypress while recording a macro.
+void dynamic_macro_record_key_user(int8_t direction, keyrecord_t *record) {
+}
+
+// Triggered when the macro recording is stopped.
+void dynamic_macro_record_end_user(int8_t direction) {
+    isRecording = false;
+}
+#endif
+
 void oledkit_render_info_user(void) {
 //    keyball_oled_render_keyinfo();
     keyball_oled_render_keyinfo_custom();
 //    keyball_oled_render_ballinfo();
     keyball_oled_render_ballinfo_custom();
     keyball_oled_render_layerinfo();
+#ifdef DYNAMIC_MACRO_ENABLE
+    oled_write_P(PSTR("\n"), false);
+    oled_write_P(isRecording ? PSTR("[REC]") : PSTR("[   ]"), isRecording);
+#endif
 }
 #endif
 
