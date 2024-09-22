@@ -225,7 +225,7 @@ void keyball_oled_render_ballinfo_custom(void) {
 
 bool isRecording = false;
 // Triggered when you start recording a macro.
-void dynamic_macro_record_start_user(void) {
+void dynamic_macro_record_start_user(int8_t direction) {
     isRecording = true;
 }
 
