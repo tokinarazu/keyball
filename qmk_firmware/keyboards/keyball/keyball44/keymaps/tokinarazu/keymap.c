@@ -33,7 +33,7 @@ enum custom_keycodes {
   A2J_TOGG,    // 0x7E46
   SELWORD,     // 0x7E47
   ARROW,       // 0x7E48
-  SMTD_KEYCODES_BEGIN  // 0x7E49
+  SMTD_KEYCODES_BEGIN,  // 0x7E49
   CKC_ESC,  // 0x7E4A
   CKC_A,    // 0x7E4B
   CKC_S,    // 0x7E4C
