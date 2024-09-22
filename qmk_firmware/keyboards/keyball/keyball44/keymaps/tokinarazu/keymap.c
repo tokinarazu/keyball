@@ -44,11 +44,12 @@ enum custom_keycodes {
   CKC_L,    // 0x7E51
   CKC_SCLN, // 0x7E52
   CKC_SLSH, // 0x7E53
-  CKC_LNG2, // 0x7E54
-  CKC_SPC,  // 0x7E55
-  CKC_LNG1, // 0x7E56
-  CKC_ENT,  // 0x7E57
-  SMTD_KEYCODES_END, // 0x7E58
+  CKC_QUOT, // 0x7E54
+  CKC_LNG2, // 0x7E55
+  CKC_SPC,  // 0x7E56
+  CKC_LNG1, // 0x7E57
+  CKC_ENT,  // 0x7E58
+  SMTD_KEYCODES_END, // 0x7E59
   MY_USER_0 = KEYBALL_SAFE_RANGE + 32,  // 0x7E60
   M_UPDIR,
 };
