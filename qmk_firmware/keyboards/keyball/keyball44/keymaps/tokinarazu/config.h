@@ -45,5 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // for CAPS WORD
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+// for sm_td
+#define MAX_DEFERRED_EXECUTORS 10
 
 #define AUTO_DISABLE_IME_TIME 300000  /* 自動的に IMEが無効化されるまでの時間(ms) */
